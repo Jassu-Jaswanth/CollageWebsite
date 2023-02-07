@@ -17,13 +17,9 @@ async function get_prev_courses(student_id,year){
 // get_prev_courses(123,2003);
 
 exports.stud_profile =  async (req,res) => {
-    const qstrng = "select * from student where id = \'" + 123 + "\';";
-    await db_handler.fetchquery(qstrng)
-    .then(result => {
-        console.log(result.rows[0]);
-
-        res.end(JSON.stringify(result.rows));
-        // res.redirect("http://localhost:3000/home");
-    })
-    // get_prev_courses(student_i)
+    const qstrng = "select * from student where id = \'" + req.body.student_id + "\';";
+    const result = await db_handler.fetchquery(qstrng);
+    console.log(result.rows[0]);
+    res.send(JSON.stringify(result.rows));
+    res.end();
 }

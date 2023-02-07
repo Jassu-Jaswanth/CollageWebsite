@@ -1,7 +1,6 @@
 var express = require('express')
 var path = require('path');
 var cors = require('cors');
-var body_parser = require('body-parser');
 var app = express();
 
 var auth = require('./Controllers/login_cont');
