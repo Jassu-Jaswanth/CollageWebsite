@@ -14,3 +14,5 @@ async function hashit (password,saltRounds){bcrypt
 }
 
 hashit('jas@123',10);
+
+

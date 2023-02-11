@@ -1,25 +1,21 @@
 var db_handler = require('./db_handler');
 
-async function get_prev_courses(student_id,year){
-    const qstrng = "select t1.course_id,t1.year,title,dept_name,credits,grade \
-                    from course, (select course_id,year,grade \
-                                  from student,takes \
-                                  where student.id = takes.id and student.id = '" + student_id +"') as t1 \
-                    where t1.course_id = course.course_id \
-                    order by year desc, title desc;"
-    // console.log(qstrng);
-    db_handler.fetchquery(qstrng).then(result => {
-        for (let i = 0; i < result.rowCount; i++){
-            console.log(result.rows[i].grade);
-        }
-    })
-}
-// get_prev_courses(123,2003);
-
 exports.stud_profile =  async (req,res) => {
-    const qstrng = "select * from student where id = \'" + req.body.student_id + "\';";
+    // console.log(req.session)
+    const qstrng = "select * from student where id = \'" + 123 + "\';";
+    console.log(qstrng);
     const result = await db_handler.fetchquery(qstrng);
     console.log(result.rows[0]);
+    res.send(JSON.stringify(result.rows[0]));
+    res.end();
+}
+
+exports.course_dets = async (req,res) => {
+    //first fetch for a session existence
+    const qstrng = "select t.year as year,t.course_id as cid,c.title as cname,c.credits as credits from takes as t,course as c where t.course_id = c.course_id and id = \'" + 123 + "\' order by year desc;";
+    console.log(qstrng);
+    const result = await db_handler.fetchquery(qstrng);
+    console.log(result.rows);
     res.send(JSON.stringify(result.rows));
     res.end();
 }

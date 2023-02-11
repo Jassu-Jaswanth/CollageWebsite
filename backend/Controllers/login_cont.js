@@ -1,7 +1,7 @@
 var db_handler = require('./db_handler');
 var bcrypt = require('bcrypt');
-var util = require('util');
-const { rmSync } = require('fs');
+// var util = require('util');
+var fs = require('fs');
 
 // authentication
 async function checkHash(hash,password) {
@@ -15,17 +15,26 @@ async function checkHash(hash,password) {
 }
 
 async function valuser (req,res) {
-    console.log(req.body);
     const qstrng = "select hashed_password from user_password where id = \'" + req.body.username + "\';";
-    console.log(qstrng)
     const result = await db_handler.fetchquery(qstrng);
-    console.log(result)
+    // console.log(result)
     if(result.rowCount){
         const isver = await checkHash(result.rows[0].hashed_password,req.body.password);
-        res.send(isver);
-        res.end();
+        if(isver){
+            
+            var session=req.session;
+            session.userid=req.body.username;
+            session.sid=session.id;
+            console.log(session)
+            // sessionStorage.push(session);
+            fs.writeFile(process.env.SSTORAGE + "/" + session.id,session.userid,(err)=>{
+                if (err) throw err;
+                console.log("Session with id " + session.id + " saved to " + process.env.SSTORAGE)
+            });
+            res.send(session);
+            res.end();
+        }
     } else {
-        res.send(false);
         res.end();
     }
 }

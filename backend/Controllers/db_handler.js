@@ -1,15 +1,14 @@
 var {Client} = require('pg');
 
 async function fetchquery(qstrng){
-    const client = new Client({
-        host:'localhost',
-        user:'postgres',
-        password:'jaswanth@2002',
-        port:5432,
-        database:'testone'
-    });
-    // var dotenv = require('dotenv');
-    // dotenv.config();
+    client_options = {
+        host: process.env.PG_HOST,
+        user: process.env.PG_USER,
+        password: process.env.PG_PASSWORD,
+        port: process.env.PG_PORT,
+        database: process.env.PG_DB_NAME
+    };
+    const client = new Client(client_options);
     await client.connect();
     
     const results = await client.query(qstrng);
