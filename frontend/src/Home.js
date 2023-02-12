@@ -1,6 +1,5 @@
 import './Home.css';
 import {useState,useEffect} from 'react';
-// var utils = require('./utils')
 
 function objToQueryString(obj) {
     const keyValuePairs = [];
@@ -19,12 +18,14 @@ function Home(){
         "tot_cred" : "placeholder"
     })
     var [cdata,setcdata] = useState([])
-    var session_params;
-    if("session" in sessionStorage){
-        session_params.sessionid =  sessionStorage.getItem("session").sid;
+    var session_params = {};
+    if(sessionStorage.getItem("session")){
+        session_params.sessionid =  JSON.parse(sessionStorage.getItem("session")).sid
     }
+    console.log(session_params)
     useEffect(()=>{
-        fetch("http://localhost:8888/home",{method:'get',mode:'cors'}).then(async (response)=>{
+        // console.log()
+        fetch("http://localhost:8888/home" + "?" + objToQueryString({"sid" : session_params.sessionid}),{method:'get',mode:'cors'}).then(async (response)=>{
             let data = await response.json();
             // console.log(data);
             setgdata(data);
@@ -32,7 +33,7 @@ function Home(){
     },[])
     
     useEffect(() =>{
-        fetch("http://localhost:8888/home/coursedets",{method:'get',mode:'cors'}).then(async (response) =>{
+        fetch("http://localhost:8888/home/coursedets"+ "?" + objToQueryString({"sid" : session_params.sessionid}),{method:'get',mode:'cors'}).then(async (response) =>{
             let data = await response.json();
             // console.log(data);
             setcdata(data);

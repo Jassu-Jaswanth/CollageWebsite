@@ -27,7 +27,7 @@ async function valuser (req,res) {
             session.sid=session.id;
             console.log(session)
             // sessionStorage.push(session);
-            fs.writeFile(process.env.SSTORAGE + "/" + session.id,session.userid,(err)=>{
+            fs.writeFile(process.env.SSTORAGE + "/" + session.id,JSON.stringify(session),(err)=>{
                 if (err) throw err;
                 console.log("Session with id " + session.id + " saved to " + process.env.SSTORAGE)
             });

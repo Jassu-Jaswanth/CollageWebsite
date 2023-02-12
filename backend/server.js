@@ -13,8 +13,12 @@ var cors = require('cors');
 
 var app = express();
 
+// import controllers here
 var auth = require('./Controllers/login_cont');
 var sprofile = require('./Controllers/stud_cont');
+var course = require('./Controllers/course_cont');
+var prof = require('./Controllers/prof_cont');
+
 var cookieParser = require('cookie-parser');
 var sessions = require('express-session');
 
@@ -32,8 +36,6 @@ app.use(sessions({
     cookie: {maxAge: onehour},
     resave: false
 }))
-
-var session_storage = []
 
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.json());       
@@ -54,6 +56,11 @@ app.post('/login',auth.valuser);
 // Handle get requests here
 app.get('/home',sprofile.stud_profile);
 app.get('/home/coursedets',sprofile.course_dets);
+app.get('/course/:course_id',course.course_dets);
+app.get('/course/running',course.running);
+app.get('/instructor/:ins_id',prof.prof_dets);
+app.get('/runn_deps',course.runn_deps);
+app.get('/runn_deps/:dept_name',course.runn);
 
 app.get('/logout',(req,res) => {
     fs.unlink(process.env.SSTORAGE + "/" + req.session.id,(err)=>{

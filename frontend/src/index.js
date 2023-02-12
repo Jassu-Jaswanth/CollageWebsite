@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Login from './login';
-import './login.css';
 import Home from './Home';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
-import Regpage from './Regpage';
+import Regis from './regis';
+import Prof from './prof';
+import Course from './course';
+import { RDeps, Running } from './running';
 
 export default function Rout () {
     return (
@@ -13,7 +15,11 @@ export default function Rout () {
             <Route exact path='/' element={< Login />}></Route>
             <Route exact path='/home' element={< Home />}></Route>
             <Route exact path='/login' element={< Login />}></Route>
-            <Route exact path='/registration' element={<Regpage />}></Route>
+            <Route exact path='/home/registration' element={<Regis />}></Route>
+            <Route exact path='/instructor/:instructor_id' element={<Prof />}></Route>
+            <Route exact path='/course/running' element={<Running />}></Route>
+            <Route exact path='/course/running/:dept_name' element={<RDeps />}></Route>
+            <Route exact path='/course/:course_id' element={<Course />}></Route>
             </Routes>
         </Router>
     );

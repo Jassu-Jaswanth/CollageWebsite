@@ -5,10 +5,17 @@ import { Navigate } from "react-router-dom";
 function Login(){
     const [data,setdata] = useState({username:"",password:""});
     const [isloggedin,setloggedin] = useState(false);
+    const [active_ses,setsess] = useState(false);
     function handler(e) {
         e.preventDefault();
         setdata({username: e.target.username.value,password: e.target.password.value});
     }
+    useEffect(()=>{
+        // This is to check if any sessions currently exists!!
+        if (sessionStorage.getItem("session")){
+            setsess(true)
+        }
+    },[])
     useEffect(()=>{
         if(data.username && data.password){
             // console.log(data.username + " : " + data.password);
@@ -35,10 +42,20 @@ function Login(){
             console.log("Enter username and password");
         }
     },[data])
+    if(active_ses){
+        return (
+            <div>
+            <p>There is already a session running. want to continue?? <a href="http://localhost:3000/home">LOGIN</a></p>
+            <br/>
+            <br/>
+            <p>If its not you logout to login. <a href="http://localhost:3000 /logout"> LOGOUT </a></p>
+            </div>
+        )
+    }
     if(isloggedin){
         // setloggedin(false);
         return (
-            <Navigate replace to="/home" />
+            <Navigate to="/home" />
         )
     } else {
         return (
