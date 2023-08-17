@@ -1,7 +1,7 @@
 // Load environment variables
 var dotenv = require('dotenv');
     // Delete the options provided while submitting
-dotenv.config({path: "/home/jazzy/iitasc/backend/.env"});
+dotenv.config();
 console.log(process.env.PG_HOST);
 
 var fs = require('fs');
@@ -18,6 +18,7 @@ var auth = require('./Controllers/login_cont');
 var sprofile = require('./Controllers/stud_cont');
 var course = require('./Controllers/course_cont');
 var prof = require('./Controllers/prof_cont');
+var regis = require('./Controllers/regis_cont');
 
 var cookieParser = require('cookie-parser');
 var sessions = require('express-session');
@@ -30,6 +31,7 @@ var sessions = require('express-session');
 
 const onehour = 60*60*1000;
 // app.use(cookieParser);
+console.log(process.env.SESSION_SKEY)
 app.use(sessions({
     secret: process.env.SESSION_SKEY,
     saveUninitialized: true,
@@ -56,11 +58,13 @@ app.post('/login',auth.valuser);
 // Handle get requests here
 app.get('/home',sprofile.stud_profile);
 app.get('/home/coursedets',sprofile.course_dets);
-app.get('/course/:course_id',course.course_dets);
 app.get('/course/running',course.running);
+app.get('/course/:course_id',course.course_dets);
 app.get('/instructor/:ins_id',prof.prof_dets);
 app.get('/runn_deps',course.runn_deps);
 app.get('/runn_deps/:dept_name',course.runn);
+app.get('/deregister',regis.deregister);
+app.get('/registerCourse',regis.registerCourse);
 
 app.get('/logout',(req,res) => {
     fs.unlink(process.env.SSTORAGE + "/" + req.session.id,(err)=>{

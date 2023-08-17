@@ -25,6 +25,8 @@ async function valuser (req,res) {
             var session=req.session;
             session.userid=req.body.username;
             session.sid=session.id;
+            session.curr_year=process.env.CURR_YEAR;
+            session.sem=process.env.CURR_SEMESTER;
             console.log(session)
             // sessionStorage.push(session);
             fs.writeFile(process.env.SSTORAGE + "/" + session.id,JSON.stringify(session),(err)=>{

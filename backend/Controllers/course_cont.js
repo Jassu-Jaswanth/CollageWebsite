@@ -4,7 +4,8 @@ var fs = require('fs');
 exports.running = async (req,res)=>{
     const ses_data = await fs.readFileSync(process.env.SSTORAGE + "/" + req.query.sid,{encoding:'utf-8'});
     if(ses_data){
-        const qstrng = "select t.course_id,c.title from teaches as t,course as c where year = (select max(year) from teaches) and c.course_id = t.course_id;";
+        const qstrng = "select t.course_id,c.title from teaches as t,course as c where t.year = \'"+ process.env.CURR_YEAR+"\' and t.semester = \'" + process.env.CURR_SEMESTER +"\' and c.course_id = t.course_id;";
+        console.log(qstrng);
         const result = await db_handler.fetchquery(qstrng);
         res.send(JSON.stringify(result.rows));
         res.end();
@@ -28,7 +29,7 @@ exports.course_dets = async (req,res) => {
 exports.runn_deps = async (req,res) => {
     const ses_data = await fs.readFileSync(process.env.SSTORAGE + "/" + req.query.sid,{encoding:'utf-8'});
     if(ses_data){
-        const qstrng = "select distinct dept_name from section as s,course as c where s.course_id = c.course_id and s.year = '2010';"
+        const qstrng = "select distinct dept_name from section as s,course as c where s.course_id = c.course_id and s.year = \'" + process.env.CURR_YEAR + "\' and s.semester = \'"+process.env.CURR_SEMESTER+"\';";
         const result = await db_handler.fetchquery(qstrng);
         res.send(JSON.stringify(result.rows));
         res.end();
@@ -38,7 +39,7 @@ exports.runn_deps = async (req,res) => {
 exports.runn = async (req,res) => {
     const ses_data = await fs.readFileSync(process.env.SSTORAGE + "/" + req.query.sid,{encoding:'utf-8'});
     if(ses_data){
-        const qstrng = "select s.course_id,c.title from section as s,course as c where s.course_id = c.course_id and s.year = '2010';"
+        const qstrng = "select s.course_id,c.title from section as s,course as c where s.course_id = c.course_id and s.year = \'" + process.env.CURR_YEAR + "\' and s.semester = \'"+process.env.CURR_SEMESTER+"\' and c.dept_name = \'"+ req.params.dept_name +"\';"
         const result = await db_handler.fetchquery(qstrng);
         res.send(JSON.stringify(result.rows));
         res.end();

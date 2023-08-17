@@ -1,6 +1,7 @@
 import {useParams} from 'react-router-dom';
 import {useState,useEffect} from 'react';
 import './prof.css';
+import { urlqrystrng } from './funcs';
 
 function Prof() {
     let {instructor_id} = useParams();
@@ -9,8 +10,13 @@ function Prof() {
         "dept_name" : "placeholder",
         "cUtaken" : []
     });
+    var session_params = {};
+    if(sessionStorage.getItem("session")){
+        let ses_info = JSON.parse(sessionStorage.getItem("session"));
+        session_params.sessionid =  ses_info.sid
+    }
     useEffect(()=>{
-        fetch("http://localhost:8888/instructor/" + instructor_id,{method:'get',mode:'cors'})
+        fetch("http://localhost:8888/instructor/" + instructor_id + "?" + urlqrystrng({"sid" : session_params.sessionid}),{method:'get',mode:'cors'})
         .then(async (response) => {
             let data = await response.json();
             console.log(data);

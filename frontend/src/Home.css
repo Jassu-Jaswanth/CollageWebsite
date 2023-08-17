@@ -1,6 +1,7 @@
 .homepage {
     margin: 0px;
     background-color: rgb(56, 55, 55);
+    color: white;
     min-height: 100vh;
     height: fit-content;
     text-align: center;
@@ -18,7 +19,14 @@
     flex-direction: column;
     justify-content: center;
 }
-#internalTabs {
+#currsem {
+    padding: 50px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.internalTabs {
     padding: 5px;
     display: flex;
     justify-content: center;

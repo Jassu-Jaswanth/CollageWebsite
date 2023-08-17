@@ -13,6 +13,6 @@ async function hashit (password,saltRounds){bcrypt
   .catch(err => console.error(err.message))
 }
 
-hashit('jas@123',10);
+hashit('man@123',10);
 
 
